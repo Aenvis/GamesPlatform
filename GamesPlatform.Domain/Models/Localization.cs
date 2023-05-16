@@ -8,5 +8,7 @@ namespace GamesPlatform.Domain.Models
     public class Localization
     {
         public string Country { get; protected set; }
+        public string Region { get; protected set; }
+        public string City { get; protected set; }
     }
 }
