@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GamesPlatform.Domain.DTOs;
+using GamesPlatform.Infrastructure.DTOs;
 using GamesPlatform.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 

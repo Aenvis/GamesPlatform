@@ -13,15 +13,13 @@ namespace GamesPlatform.Domain.Models
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 
-        public User(string email, string password, string salt, string username, DateTime dateOfBirth, string? fullname = null, Localization? localization = null)
+        public User(string email, string password, string salt, string username, DateTime dateOfBirth)
         {
             Email = email;
             Password = password;
             Salt = salt;
             Username = username;
-            dateOfBirth = dateOfBirth;
-            Fullname = fullname;
-            Localization = localization;
+            DateOfBirth = dateOfBirth;
             CreatedAt = DateTime.UtcNow;
         }
 

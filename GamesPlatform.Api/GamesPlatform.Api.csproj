@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
   <ProjectReference Include="../GamesPlatform.Domain/GamesPlatform.Domain.csproj"/>
+  <ProjectReference Include="../GamesPlatform.Infrastructure/GamesPlatform.Infrastructure.csproj"/>
   </ItemGroup>
 
 </Project>

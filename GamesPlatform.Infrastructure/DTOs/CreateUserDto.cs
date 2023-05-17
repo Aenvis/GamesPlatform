@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GamesPlatform.Domain.DTOs
+namespace GamesPlatform.Infrastructure.DTOs
 {
     public class CreateUserDto
     {
