@@ -2,6 +2,9 @@ using GamesPlatform.Infrastructure.DTOs;
 using GamesPlatform.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using GamesPlatform.Infrastructure.Services;
+using GamesPlatform.Infrastructure.Commands;
+using Microsoft.Extensions.DependencyInjection;
+using GamesPlatform.Infrastructure.Commands.Users;
 
 namespace GamesPlatform.Api.Controllers
 {
@@ -10,22 +13,24 @@ namespace GamesPlatform.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ICommandDispatcher _commandDispatcher;
         
         public UsersController(IServiceProvider serviceProvider)
         {
-            _userService = (IUserService)serviceProvider.GetRequiredService(typeof(IUserService));    
+            _userService = serviceProvider.GetRequiredService<IUserService>();  
+            _commandDispatcher = serviceProvider.GetRequiredService<ICommandDispatcher>();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string email)
+        public async Task<ActionResult<UserDto>> Get(string email)
         {
             return Ok(await _userService.GetAsync(email));
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] CreateUserDto request)
+        public async Task<IActionResult> Post([FromBody] CreateUserCommand request)
         {
-            var newUser = new User(request.Email, request.Password, "salt", request.Username, request.DateOfBirth);
+            await _commandDispatcher.DispatchAsync(request);
             
             return Created($"users/{request.Email}", null);
         }

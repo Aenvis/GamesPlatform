@@ -1,23 +1,27 @@
+using AutoMapper;
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace GamesPlatform.Infrastructure.Services
 {
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        
+        private readonly IMapper _mapper;
+         
         public UserService(IServiceProvider serviceProvider)
         {
-            _userRepository = (IUserRepository)serviceProvider.GetRequiredService(typeof(IUserRepository));
+            _userRepository = serviceProvider.GetRequiredService<IUserRepository>();
+            _mapper = serviceProvider.GetRequiredService<IMapper>();
         }
 
-        public async Task<User> GetAsync(string email)
+        public async Task<UserDto> GetAsync(string email)
         {
-           return await _userRepository.GetAsync(email);
+           var user = await _userRepository.GetAsync(email);
+
+            return _mapper.Map<User, UserDto>(user); 
         }
         
         public async Task<IEnumerable<UserDto>> GetAllAsync()
