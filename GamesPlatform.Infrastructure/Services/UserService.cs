@@ -1,5 +1,8 @@
+using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace GamesPlatform.Infrastructure.Services
 {
@@ -7,17 +10,17 @@ namespace GamesPlatform.Infrastructure.Services
     {
         private readonly IUserRepository _userRepository;
         
-        public UserService(IUserRepository userRepository)
+        public UserService(IServiceProvider serviceProvider)
         {
-            _userRepository = userRepository;
+            _userRepository = (IUserRepository)serviceProvider.GetRequiredService(typeof(IUserRepository));
         }
 
-        public Task<UserDto> GetAsync(string email)
+        public async Task<User> GetAsync(string email)
         {
-            throw new NotImplementedException();
+           return await _userRepository.GetAsync(email);
         }
         
-        public Task<IEnumerable<UserDto>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
