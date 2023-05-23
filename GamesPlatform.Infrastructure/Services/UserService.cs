@@ -3,6 +3,7 @@ using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.RegularExpressions;
 
 namespace GamesPlatform.Infrastructure.Services
 {
@@ -31,12 +32,26 @@ namespace GamesPlatform.Infrastructure.Services
 
         public Task RegisterAsync(Guid id, string email, string username, string password, DateTime dateOfBirth)
         {
-            throw new NotImplementedException();
+            // TODO: validate arguments and implement response class
+            return Task.CompletedTask;
         }
 
         public Task LoginAsync(string email, string password)
         {
             throw new NotImplementedException();
+        }
+        private bool IsValidEmail(string email)
+        {
+            var emailRegex = @"^[^@\s]+@[^@\s]+\.(com|net|org|gov)$";
+
+            return Regex.IsMatch(email, emailRegex, RegexOptions.IgnoreCase);
+        }
+
+        private bool IsValidDateOfBirth(DateTime dateOfBirth)
+        {
+            var dt = dateOfBirth.AddYears(13);
+
+            return dt.Date > dateOfBirth.Date ? false : true;
         }
     }
 }
