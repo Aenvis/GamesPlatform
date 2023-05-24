@@ -5,6 +5,7 @@ using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using GamesPlatform.Infrastructure.Commands.Users;
+using System;
 
 namespace GamesPlatform.Api.Controllers
 {
@@ -15,16 +16,22 @@ namespace GamesPlatform.Api.Controllers
         private readonly IUserService _userService;
         private readonly ICommandDispatcher _commandDispatcher;
         
-        public UsersController(IServiceProvider serviceProvider)
+        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
         {
-            _userService = serviceProvider.GetRequiredService<IUserService>();  
-            _commandDispatcher = serviceProvider.GetRequiredService<ICommandDispatcher>();
+            _userService = userService;  
+            _commandDispatcher = commandDispatcher;
         }
 
-        [HttpGet]
+        [HttpGet("{email}")]
         public async Task<ActionResult<UserDto>> Get(string email)
         {
             return Ok(await _userService.GetAsync(email));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
+        {
+            return Ok(await _userService.GetAllAsync());
         }
 
         [HttpPost]
