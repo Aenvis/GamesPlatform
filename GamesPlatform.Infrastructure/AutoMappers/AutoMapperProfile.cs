@@ -9,6 +9,7 @@ namespace GamesPlatform.Infrastructure.AutoMappers
         public AutoMapperProfile()
         {  
             CreateMap<User, UserDto>();
+            CreateMap<IEnumerable<UserDto>, IEnumerable<User>>();
         }
     }
 }

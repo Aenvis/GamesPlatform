@@ -13,8 +13,9 @@ namespace GamesPlatform.Domain.Models
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 
-        public User(string email, string password, string salt, string username, DateTime dateOfBirth)
+        public User(Guid id, string email, string password, string salt, string username, DateTime dateOfBirth)
         {
+            Id = id;
             Email = email;
             Password = password;
             Salt = salt;

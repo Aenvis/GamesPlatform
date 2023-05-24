@@ -12,42 +12,37 @@ namespace GamesPlatform.Infrastructure.Repositiories
         {
             _users = new List<User>
             {
-                new User("user1@email.com", "password", "salt", "User1", new DateTime(2002, 1, 1))
+                new User(Guid.NewGuid(), "user1@email.com", "password", "salt", "User1", new DateTime(2002, 1, 1))
             };
         }
 
         public async Task<User> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return _users.SingleOrDefault(x => x.Id == id);
         }
 
         public async Task<User> GetAsync(string email)
         {
-            var user = _users.FirstOrDefault(x => x.Email == email);
-
-            if (user == null)
-            {
-                throw new Exception($"User with email: {email} is not registered.");
-            }
-
-            return user; 
+            return _users.SingleOrDefault(x => x.Email == email);
         }
 
         public async Task<IEnumerable<User>> GetAllAsync() => Users;
 
         public async Task CreateAsync(User user)
         {
-            throw new NotImplementedException();
+            _users.Add(user);
         }
 
         public async Task UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            //update user
+            await Task.CompletedTask;
         }
         
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var userToDelete = await GetAsync(id);
+            _users.Remove(userToDelete);
         }
     }
 }
