@@ -34,7 +34,7 @@ namespace GamesPlatform.Infrastructure.Services
 
         public async Task RegisterAsync(Guid id, string email, string username, string password, DateTime dateOfBirth)
         {
-            // TODO: handle exceptions better?
+            // User validation done here omits query from the database
             ValidateNewUser(email, dateOfBirth);
 
             var newUser = await _userRepository.GetAsync(email);
