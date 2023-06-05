@@ -3,6 +3,7 @@ using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace GamesPlatform.Infrastructure.Services
@@ -13,20 +14,20 @@ namespace GamesPlatform.Infrastructure.Services
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
          
-        public UserService(IServiceProvider serviceProvider)
+        public UserService(IUserRepository userRepository, IMapper mapper)
         {
-            _userRepository = serviceProvider.GetRequiredService<IUserRepository>();
-            _mapper = serviceProvider.GetRequiredService<IMapper>();
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
-
-        public async Task<UserDto> GetAsync(string email)
+        
+        public async Task<UserDto> GetUserAsync(string email)
         {
            var user = await _userRepository.GetAsync(email);
 
             return _mapper.Map<User, UserDto>(user); 
         }
         
-        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
             var users = await _userRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users);
@@ -34,7 +35,7 @@ namespace GamesPlatform.Infrastructure.Services
 
         public async Task RegisterAsync(Guid id, string email, string username, string password, DateTime dateOfBirth)
         {
-            // TODO: handle exceptions better?
+            // TODO: change way of error handling
             ValidateNewUser(email, dateOfBirth);
 
             var newUser = await _userRepository.GetAsync(email);

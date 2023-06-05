@@ -10,6 +10,5 @@ namespace GamesPlatform.Domain.Repositories
         Task CreateAsync(User user);
         Task UpdateAsync(User user);
         Task DeleteAsync(Guid id);
-        
     }
 }

@@ -25,13 +25,13 @@ namespace GamesPlatform.Api.Controllers
         [HttpGet("{email}")]
         public async Task<ActionResult<UserDto>> Get(string email)
         {
-            return Ok(await _userService.GetAsync(email));
+            return Ok(await _userService.GetUserAsync(email));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
-            return Ok(await _userService.GetAllAsync());
+            return Ok(await _userService.GetAllUsersAsync());
         }
 
         [HttpPost]

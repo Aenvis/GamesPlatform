@@ -10,5 +10,12 @@ namespace GamesPlatform.Domain.Models
         public string Country { get; protected set; }
         public string Region { get; protected set; }
         public string City { get; protected set; }
+
+        public Localization(string country, string region, string city)
+        {
+            Country = country;
+            Region = region;
+            City = city;
+        }
     }
 }
