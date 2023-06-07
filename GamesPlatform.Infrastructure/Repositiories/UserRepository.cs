@@ -18,12 +18,16 @@ namespace GamesPlatform.Infrastructure.Repositiories
 
         public async Task<User> GetAsync(Guid id)
         {
-            return _users.SingleOrDefault(x => x.Id == id);
+            var user = _users.SingleOrDefault(x => x.Id == id);
+
+            return user;
         }
 
         public async Task<User> GetAsync(string email)
         {
-            return _users.SingleOrDefault(x => x.Email == email);
+            var user = _users.SingleOrDefault(x => x.Email == email);
+
+            return user;
         }
 
         public async Task<IEnumerable<User>> GetAllAsync() => Users;
