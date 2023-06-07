@@ -16,23 +16,18 @@ namespace GamesPlatform.Infrastructure.Repositiories
             };
         }
 
-        public async Task<ServiceResponse<User>> GetAsync(Guid id)
+        public async Task<User> GetAsync(Guid id)
         {
             var user = _users.SingleOrDefault(x => x.Id == id);
 
-            if(user is not null)
-            {
-                return new ServiceResponse<User>
-                {
-                    StatusCode = 200,
-                    Data = user
-                };
-            }
+            return user;
         }
-=
+
         public async Task<User> GetAsync(string email)
         {
-            return _users.SingleOrDefault(x => x.Email == email);
+            var user = _users.SingleOrDefault(x => x.Email == email);
+
+            return user;
         }
 
         public async Task<IEnumerable<User>> GetAllAsync() => Users;

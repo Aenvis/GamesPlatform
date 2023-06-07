@@ -23,23 +23,29 @@ namespace GamesPlatform.Api.Controllers
         }
 
         [HttpGet("{email}")]
-        public async Task<ActionResult<UserDto>> Get(string email)
+        public async Task<ActionResult<UserDto>> GetByEmail(string email)
         {
-            return Ok(await _userService.GetUserAsync(email));
+            var response = await _userService.GetUserAsync(email);
+
+            if(!response.IsSuccess) return NotFound(response.Message);
+            
+            return Ok(response.Data);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
-            return Ok(await _userService.GetAllUsersAsync());
+            var allUsers = await _userService.GetAllUsersAsync();
+
+            return Ok(allUsers);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateUserCommand request)
+        public async Task<IActionResult> Register([FromBody] CreateUserCommand request)
         {
             await _commandDispatcher.DispatchAsync(request);
             
-            return Created($"users/{request.Email}", null);
+            return Created($"users/{request.Username}", null);
         }
     }
 }

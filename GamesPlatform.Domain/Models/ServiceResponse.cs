@@ -6,4 +6,10 @@ namespace GamesPlatform.Domain.Models
         public bool IsSuccess { get; set; }
         public string? Message { get; set; } = String.Empty; 
     }
+
+    public class ServiceResponse
+    {
+        public bool IsSuccess { get; set; }
+        public string? Message { get; set; } = String.Empty;
+    }
 }
