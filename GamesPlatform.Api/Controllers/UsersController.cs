@@ -15,10 +15,10 @@ namespace GamesPlatform.Api.Controllers
     {
         private readonly IUserService _userService;
         private readonly ICommandDispatcher _commandDispatcher;
-        
+
         public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
         {
-            _userService = userService;  
+            _userService = userService;
             _commandDispatcher = commandDispatcher;
         }
 
@@ -27,23 +27,32 @@ namespace GamesPlatform.Api.Controllers
         {
             var response = await _userService.GetUserAsync(email);
 
-            if(!response.IsSuccess) return NotFound(response.Message);
-            
+            if (!response.IsSuccess) return NotFound(response.Message);
+
             return Ok(response.Data);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
-            var allUsers = await _userService.GetAllUsersAsync();
+            var response = await _userService.GetAllUsersAsync();
 
-            return Ok(allUsers);
+            if (!response.IsSuccess) return NotFound(response.Message);
+            
+            return Ok(response.Data);
         }
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] CreateUserCommand request)
         {
-            await _commandDispatcher.DispatchAsync(request);
+            try
+            {
+                await _commandDispatcher.DispatchAsync(request);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
             
             return Created($"users/{request.Username}", null);
         }

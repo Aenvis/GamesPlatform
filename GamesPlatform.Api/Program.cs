@@ -4,6 +4,10 @@ using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.AutoMappers;
 using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.IoC;
+using GamesPlatform.Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+using GamesPlatform.Infrastructure.Models;
+using System.Net.WebSockets;
 
 internal class Program
 {
@@ -23,7 +27,15 @@ internal class Program
         builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddCommandHandlers();
 
+        builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
+
         var app = builder.Build();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var serviceProvider = scope.ServiceProvider;
+            SeedUserData.Initialize(serviceProvider);
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

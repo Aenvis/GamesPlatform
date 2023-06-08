@@ -1,52 +1,54 @@
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
+using GamesPlatform.Infrastructure.EntityFramework;
+using Microsoft.EntityFrameworkCore;
 
 namespace GamesPlatform.Infrastructure.Repositiories
 {
     public class UserRepository : IUserRepository
     {
-        private IList<User> _users;
-        public IEnumerable<User> Users => _users;
+        private readonly UserContext _context;
 
-        public UserRepository()
+        public UserRepository(UserContext userContext)
         {
-            _users = new List<User>
-            {
-                new User(Guid.NewGuid(), "user1@email.com", "password", "salt", "User1", new DateTime(2002, 1, 1))
-            };
+            _context = userContext;
         }
 
-        public async Task<User> GetAsync(Guid id)
+        public async Task<User?> GetAsync(Guid id)
         {
-            var user = _users.SingleOrDefault(x => x.Id == id);
-
-            return user;
+            return await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<User> GetAsync(string email)
+        public async Task<User?> GetAsync(string email)
         {
-            var user = _users.SingleOrDefault(x => x.Email == email);
-
-            return user;
+            return await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync() => Users;
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return  await _context.Users.ToListAsync();
+        }
 
         public async Task CreateAsync(User user)
         {
-            _users.Add(user);
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(User user)
         {
-            //update user
-            await Task.CompletedTask;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
         }
         
         public async Task DeleteAsync(Guid id)
         {
             var userToDelete = await GetAsync(id);
-            _users.Remove(userToDelete);
+
+            if (userToDelete is null) return;
+
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
         }
     }
 }
