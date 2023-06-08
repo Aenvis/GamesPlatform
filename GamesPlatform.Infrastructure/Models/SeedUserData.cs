@@ -22,6 +22,8 @@ namespace GamesPlatform.Infrastructure.Models
                 new User(Guid.NewGuid(), "email5@email.com", "secret5", "salt", "CatsOverDogs", new DateTime(2000, 03, 03)),
                 new User(Guid.NewGuid(), "email6@email.com", "secret6", "salt", "KurtCombine", new DateTime(1997, 04, 01))
                 );
+
+            context.SaveChanges();
         }
     }
 }
