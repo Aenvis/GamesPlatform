@@ -1,19 +1,16 @@
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
+using GamesPlatform.Infrastructure.EntityFramework;
 
 namespace GamesPlatform.Infrastructure.Repositiories
 {
     public class UserRepository : IUserRepository
     {
-        private IList<User> _users;
-        public IEnumerable<User> Users => _users;
+        private readonly UserContext _context;
 
-        public UserRepository()
+        public UserRepository(UserContext userContext)
         {
-            _users = new List<User>
-            {
-                new User(Guid.NewGuid(), "user1@email.com", "password", "salt", "User1", new DateTime(2002, 1, 1))
-            };
+            _context = userContext;
         }
 
         public async Task<User> GetAsync(Guid id)

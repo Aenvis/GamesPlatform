@@ -9,7 +9,9 @@ namespace GamesPlatform.Domain.Models
         public string Username { get; protected set; }
         public string? Fullname { get; protected set; }
         public DateTime DateOfBirth { get; protected set; }
-        public Localization? Localization { get; protected set; }
+        public string? Country { get; protected set; }
+        public string? Region { get; protected set; }
+        public string? City { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime UpdatedAt { get; protected set; }
 

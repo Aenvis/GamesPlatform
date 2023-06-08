@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 
 namespace GamesPlatform.Infrastructure.Services
 {
-    //TODO: Add ServiceResponse and handle status codes in Controller
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
@@ -42,6 +41,16 @@ namespace GamesPlatform.Infrastructure.Services
         public async Task<ServiceResponse<IEnumerable<UserDto>>> GetAllUsersAsync()
         {
             var users = await _userRepository.GetAllAsync();
+
+            if(users is null)
+            {
+                return new ServiceResponse<IEnumerable<UserDto>>
+                {
+                    Message = "Users list not found.",
+                    IsSuccess = false
+                };
+            }
+
             return new ServiceResponse<IEnumerable<UserDto>>
             {
                 Data = _mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users),
@@ -55,7 +64,7 @@ namespace GamesPlatform.Infrastructure.Services
             
             if(newUser is not null)
             {
-                throw new Exception($"User with given email {email} already exists.");
+                throw new Exception($"User with given email: '{email}' already exists.");
             }
 
             //TODO: Add salt and password hashing
