@@ -11,14 +11,14 @@ namespace GamesPlatform.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly ICommandDispatcher _commandDispatcher;
-        
-        public UserController(IUserService userService, ICommandDispatcher commandDispatcher)
+
+        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
         {
-            _userService = userService;  
+            _userService = userService;
             _commandDispatcher = commandDispatcher;
         }
 
@@ -27,8 +27,8 @@ namespace GamesPlatform.Api.Controllers
         {
             var response = await _userService.GetUserAsync(email);
 
-            if(!response.IsSuccess) return NotFound(response.Message);
-            
+            if (!response.IsSuccess) return NotFound(response.Message);
+
             return Ok(response.Data);
         }
 
