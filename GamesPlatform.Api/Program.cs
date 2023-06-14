@@ -7,9 +7,9 @@ using GamesPlatform.Infrastructure.IoC;
 using GamesPlatform.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using GamesPlatform.Infrastructure.Models;
-using System.Net.WebSockets;
 
-internal class Program
+
+public static class Program
 {
     private static void Main(string[] args)
     {
@@ -18,6 +18,9 @@ internal class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddAuthentication()
+                        .AddJwtBearer();
 
         builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
@@ -29,7 +32,10 @@ internal class Program
 
         builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
 
+
+
         var app = builder.Build();
+
 
         using (var scope = app.Services.CreateScope())
         {
@@ -45,7 +51,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
-
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
