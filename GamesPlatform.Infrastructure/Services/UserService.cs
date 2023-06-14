@@ -9,11 +9,13 @@ namespace GamesPlatform.Infrastructure.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IEncrypter _encrypter;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, IEncrypter encrypter)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _encrypter = encrypter;
         }
 
         public async Task<ServiceResponse<UserDto>> GetUserAsync(string email)
@@ -61,17 +63,31 @@ namespace GamesPlatform.Infrastructure.Services
 
             if (newUser is not null)
             {
-                throw new Exception($"User with given email: '{email}' already exists.");
+                throw new ArgumentException($"User with given email: '{email}' already exists.");
             }
 
             //TODO: Add salt and password hashing
-            var user = new User(id, email, password, "salt", username, dateOfBirth);
+            var salt = _encrypter.GetSalt();
+            var hash = _encrypter.GetHash(password, salt);
+            var user = new User(id, email, hash, salt, username, dateOfBirth);
             await _userRepository.CreateAsync(user);
         }
 
-        public Task LoginAsync(string email, string password)
+        public async Task LoginAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetAsync(email);
+
+            if(user is null)
+            {
+                throw new ArgumentException("Invalid email or password.");
+            }
+
+            var salt = user.Salt;
+            var hash = user.Password;
+
+            if (hash == _encrypter.GetHash(password, salt)) return;
+
+            throw new ArgumentException("Invalid email or password.");
         }
     }
 }

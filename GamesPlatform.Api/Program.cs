@@ -26,6 +26,7 @@ public static class Program
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddSingleton<IEncrypter, Encrypter>();
 
         builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddCommandHandlers();

@@ -53,5 +53,7 @@ namespace GamesPlatform.Api.Controllers
 
             return Created($"users/{request.Username}", null);
         }
+
+
     }
 }

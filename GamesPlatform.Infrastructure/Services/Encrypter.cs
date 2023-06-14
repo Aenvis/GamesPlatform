@@ -17,18 +17,18 @@ namespace GamesPlatform.Infrastructure.Services
             return Convert.ToBase64String(saltBytes);
         }
 
-        public string GetHash(string password, string salt)
+        public string GetHash(string value, string salt)
         {
-            if (String.IsNullOrEmpty(password))
+            if (String.IsNullOrEmpty(value))
             {
-                throw new ArgumentException("Cannot generate hash from a null or empty value.", nameof(password));
+                throw new ArgumentException("Cannot generate hash from a null or empty value.", nameof(value));
             }
             if (String.IsNullOrEmpty(salt))
             {
                 throw new ArgumentException("Cannot use a null or empty salt from hashing value.", nameof(salt));
             }
 
-            var passwordBytes = Encoding.Unicode.GetBytes(password);
+            var passwordBytes = Encoding.Unicode.GetBytes(value);
             var saltBytes = Encoding.Unicode.GetBytes(salt);
             var hashAlgorithmName = HashAlgorithmName.SHA1;
             var hashLength = 20;

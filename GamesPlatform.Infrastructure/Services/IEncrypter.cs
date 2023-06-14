@@ -3,6 +3,6 @@
     public interface IEncrypter
     {
         string GetSalt();
-        string GetHash(string password, string salt);
+        string GetHash(string value, string salt);
     }
 }
