@@ -1,11 +1,8 @@
-using GamesPlatform.Infrastructure.DTOs;
-using GamesPlatform.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
-using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.Commands;
-using Microsoft.Extensions.DependencyInjection;
 using GamesPlatform.Infrastructure.Commands.Users;
-using System;
+using GamesPlatform.Infrastructure.DTOs;
+using GamesPlatform.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GamesPlatform.Api.Controllers
 {
@@ -38,7 +35,7 @@ namespace GamesPlatform.Api.Controllers
             var response = await _userService.GetAllUsersAsync();
 
             if (!response.IsSuccess) return NotFound(response.Message);
-            
+
             return Ok(response.Data);
         }
 
@@ -53,7 +50,7 @@ namespace GamesPlatform.Api.Controllers
             {
                 return BadRequest(e.Message);
             }
-            
+
             return Created($"users/{request.Username}", null);
         }
     }

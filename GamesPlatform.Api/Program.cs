@@ -1,12 +1,12 @@
 using GamesPlatform.Domain.Repositories;
-using GamesPlatform.Infrastructure.Repositiories;
-using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.AutoMappers;
 using GamesPlatform.Infrastructure.Commands;
-using GamesPlatform.Infrastructure.IoC;
 using GamesPlatform.Infrastructure.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+using GamesPlatform.Infrastructure.IoC;
 using GamesPlatform.Infrastructure.Models;
+using GamesPlatform.Infrastructure.Repositiories;
+using GamesPlatform.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 
 public static class Program
