@@ -13,8 +13,8 @@ namespace GamesPlatform.Infrastructure.Commands
 
         public async Task DispatchAsync<T>(T command) where T : ICommand
         {
-            if(command is null) 
-            { 
+            if (command is null)
+            {
                 throw new ArgumentNullException(nameof(command), $"{typeof(T).Name} cannot be null.");
             }
 

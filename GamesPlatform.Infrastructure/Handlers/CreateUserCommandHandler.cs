@@ -1,5 +1,4 @@
-﻿using GamesPlatform.Domain.Models;
-using GamesPlatform.Infrastructure.Commands;
+﻿using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.Commands.Users;
 using GamesPlatform.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +11,7 @@ namespace GamesPlatform.Infrastructure.Handlers
 
         public CreateUserCommandHandler(IServiceProvider serviceProvider)
         {
-            _userService = serviceProvider.GetRequiredService<IUserService>();    
+            _userService = serviceProvider.GetRequiredService<IUserService>();
         }
         public async Task HandleAsync(CreateUserCommand command)
         {

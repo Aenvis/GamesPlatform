@@ -1,7 +1,7 @@
-﻿using GamesPlatform.Infrastructure.EntityFramework;
+﻿using GamesPlatform.Domain.Models;
+using GamesPlatform.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using GamesPlatform.Domain.Models;
 
 namespace GamesPlatform.Infrastructure.Models
 {

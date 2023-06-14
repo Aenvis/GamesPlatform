@@ -1,7 +1,4 @@
-﻿using GamesPlatform.Domain.Models;
-using System.ComponentModel;
-
-namespace GamesPlatform.Infrastructure.Commands
+﻿namespace GamesPlatform.Infrastructure.Commands
 {
     public interface ICommandHandler<T> where T : ICommand
     {

@@ -2,9 +2,6 @@ using AutoMapper;
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
-using Microsoft.Extensions.DependencyInjection;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
 namespace GamesPlatform.Infrastructure.Services
 {
@@ -12,7 +9,7 @@ namespace GamesPlatform.Infrastructure.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-         
+
         public UserService(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
@@ -23,7 +20,7 @@ namespace GamesPlatform.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(email);
 
-            if (user is null) 
+            if (user is null)
             {
                 return new ServiceResponse<UserDto>
                 {
@@ -32,7 +29,7 @@ namespace GamesPlatform.Infrastructure.Services
                 };
             }
             return new ServiceResponse<UserDto>
-            { 
+            {
                 Data = _mapper.Map<User, UserDto>(user),
                 IsSuccess = true
             };
@@ -42,7 +39,7 @@ namespace GamesPlatform.Infrastructure.Services
         {
             var users = await _userRepository.GetAllAsync();
 
-            if(users is null)
+            if (users is null)
             {
                 return new ServiceResponse<IEnumerable<UserDto>>
                 {
@@ -61,8 +58,8 @@ namespace GamesPlatform.Infrastructure.Services
         public async Task RegisterAsync(Guid id, string email, string username, string password, DateTime dateOfBirth)
         {
             var newUser = await _userRepository.GetAsync(email);
-            
-            if(newUser is not null)
+
+            if (newUser is not null)
             {
                 throw new Exception($"User with given email: '{email}' already exists.");
             }

@@ -26,7 +26,7 @@ namespace GamesPlatform.Infrastructure.Repositiories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return  await _context.Users.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
         public async Task CreateAsync(User user)
@@ -40,7 +40,7 @@ namespace GamesPlatform.Infrastructure.Repositiories
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
-        
+
         public async Task DeleteAsync(Guid id)
         {
             var userToDelete = await GetAsync(id);
