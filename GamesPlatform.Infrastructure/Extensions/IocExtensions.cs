@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace GamesPlatform.Infrastructure.IoC
+namespace GamesPlatform.Infrastructure.Extensions
 {
-    public static class Extensions
+    public static class IocExtensions
     {
         public static IServiceCollection AddCommandHandlers(this IServiceCollection services)
         {

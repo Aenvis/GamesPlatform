@@ -2,6 +2,8 @@ using AutoMapper;
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
+using GamesPlatform.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 
 namespace GamesPlatform.Infrastructure.Services
 {
@@ -66,7 +68,6 @@ namespace GamesPlatform.Infrastructure.Services
                 throw new ArgumentException($"User with given email: '{email}' already exists.");
             }
 
-            //TODO: Add salt and password hashing
             var salt = _encrypter.GetSalt();
             var hash = _encrypter.GetHash(password, salt);
             var user = new User(id, email, hash, salt, username, dateOfBirth);
