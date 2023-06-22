@@ -1,23 +1,19 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using GamesPlatform.Infrastructure.Settings;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamesPlatform.Infrastructure.Options
 {
-    public class JwtOptionsSetup : IConfigureOptions<JwtOptions>
+    public class JwtSettingsSetup : IConfigureOptions<JwtSettings>
     {
         private const string SectionName = "Jwt";
         private readonly IConfiguration _configuration;
 
-        public JwtOptionsSetup(IConfiguration configuration)
+        public JwtSettingsSetup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        public void Configure(JwtOptions options)
+        public void Configure(JwtSettings options)
         {
             _configuration.GetSection(SectionName).Bind(options);
         }

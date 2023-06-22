@@ -28,8 +28,8 @@ namespace GamesPlatform.Infrastructure.Services
                 throw new ArgumentException("Cannot use a null or empty salt from hashing value.", nameof(salt));
             }
 
-            var passwordBytes = Encoding.Unicode.GetBytes(value);
-            var saltBytes = Encoding.Unicode.GetBytes(salt);
+            var passwordBytes = Encoding.UTF8.GetBytes(value);
+            var saltBytes = Encoding.UTF8.GetBytes(salt);
             var hashAlgorithmName = HashAlgorithmName.SHA1;
             var hashLength = 20;
             var pbkdf2 = Rfc2898DeriveBytes.Pbkdf2(passwordBytes, saltBytes, Pbkdf2IterationsCount, hashAlgorithmName, hashLength);

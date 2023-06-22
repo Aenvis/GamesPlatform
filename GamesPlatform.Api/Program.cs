@@ -9,6 +9,8 @@ using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using GamesPlatform.Infrastructure.Settings;
+using System.Text;
 
 public static class Program
 {
@@ -20,16 +22,20 @@ public static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.ConfigureOptions<JwtOptionsSetup>();
+        builder.Services.ConfigureOptions<JwtSettingsSetup>();
 
         builder.Services.AddAuthentication()
                         .AddJwtBearer(cfg =>
                         {
+                            var key = builder.Configuration.GetValue<string>("Jwt:Key");
+                            cfg.RequireHttpsMetadata = false;
+                            cfg.SaveToken = true;
+
                             cfg.TokenValidationParameters = new TokenValidationParameters
                             {
-                                //ValidIssuer = "https://localhost:7101",
-                                //ValidateAudience = false,
-                                //IssuerSigningKey = 
+                                ValidIssuer = "https://localhost:7101",
+                                ValidateAudience = false,
+                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
                             };
                         });
 
