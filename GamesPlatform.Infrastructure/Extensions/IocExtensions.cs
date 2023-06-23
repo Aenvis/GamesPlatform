@@ -9,7 +9,7 @@ namespace GamesPlatform.Infrastructure.Extensions
         {
             Assembly.GetExecutingAssembly()
                 .GetTypes()
-                .Where(a => a.Name.EndsWith("Handler") && !a.IsAbstract && !a.IsInterface)
+                .Where(a => a.Name.EndsWith("CommandHandler") && !a.IsAbstract && !a.IsInterface)
                 .Select(a => new { assignedType = a, serviceTypes = a.GetInterfaces().ToList() })
                 .ToList()
                 .ForEach(typesToRegister =>

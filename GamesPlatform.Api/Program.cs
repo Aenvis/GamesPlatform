@@ -22,7 +22,8 @@ public static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.ConfigureOptions<JwtSettingsSetup>();
+        var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+        builder.Services.AddSingleton(jwtSettings);
 
         builder.Services.AddAuthentication()
                         .AddJwtBearer(cfg =>
@@ -44,6 +45,7 @@ public static class Program
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddSingleton<IEncrypter, Encrypter>();
+        builder.Services.AddSingleton<IJwtHandler, JwtHandler>(services => new JwtHandler(services.GetRequiredService<JwtSettings>()));
 
         builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddCommandHandlers();
