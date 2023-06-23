@@ -2,9 +2,8 @@ using AutoMapper;
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
-using Microsoft.Extensions.DependencyInjection;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+using GamesPlatform.Infrastructure.Options;
+using Microsoft.Extensions.Options;
 
 namespace GamesPlatform.Infrastructure.Services
 {
@@ -12,18 +11,20 @@ namespace GamesPlatform.Infrastructure.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-         
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        private readonly IEncrypter _encrypter;
+
+        public UserService(IUserRepository userRepository, IMapper mapper, IEncrypter encrypter)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _encrypter = encrypter;
         }
 
         public async Task<ServiceResponse<UserDto>> GetUserAsync(string email)
         {
             var user = await _userRepository.GetAsync(email);
 
-            if (user is null) 
+            if (user is null)
             {
                 return new ServiceResponse<UserDto>
                 {
@@ -32,7 +33,7 @@ namespace GamesPlatform.Infrastructure.Services
                 };
             }
             return new ServiceResponse<UserDto>
-            { 
+            {
                 Data = _mapper.Map<User, UserDto>(user),
                 IsSuccess = true
             };
@@ -42,7 +43,7 @@ namespace GamesPlatform.Infrastructure.Services
         {
             var users = await _userRepository.GetAllAsync();
 
-            if(users is null)
+            if (users is null)
             {
                 return new ServiceResponse<IEnumerable<UserDto>>
                 {
@@ -61,20 +62,33 @@ namespace GamesPlatform.Infrastructure.Services
         public async Task RegisterAsync(Guid id, string email, string username, string password, DateTime dateOfBirth)
         {
             var newUser = await _userRepository.GetAsync(email);
-            
-            if(newUser is not null)
+
+            if (newUser is not null)
             {
-                throw new Exception($"User with given email: '{email}' already exists.");
+                throw new ArgumentException($"User with given email: '{email}' already exists.");
             }
 
-            //TODO: Add salt and password hashing
-            var user = new User(id, email, password, "salt", username, dateOfBirth);
+            var salt = _encrypter.GetSalt();
+            var hash = _encrypter.GetHash(password, salt);
+            var user = new User(id, email, hash, salt, username, dateOfBirth);
             await _userRepository.CreateAsync(user);
         }
 
-        public Task LoginAsync(string email, string password)
+        public async Task LoginAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetAsync(email);
+
+            if(user is null)
+            {
+                throw new ArgumentException("Invalid email or password.");
+            }
+
+            var salt = user.Salt;
+            var hash = user.Password;
+
+            if (hash == _encrypter.GetHash(password, salt)) return;
+
+            throw new ArgumentException("Invalid email or password.");
         }
     }
 }

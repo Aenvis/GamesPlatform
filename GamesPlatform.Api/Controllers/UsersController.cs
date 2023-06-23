@@ -1,11 +1,8 @@
-using GamesPlatform.Infrastructure.DTOs;
-using GamesPlatform.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
-using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.Commands;
-using Microsoft.Extensions.DependencyInjection;
 using GamesPlatform.Infrastructure.Commands.Users;
-using System;
+using GamesPlatform.Infrastructure.DTOs;
+using GamesPlatform.Infrastructure.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GamesPlatform.Api.Controllers
 {
@@ -15,15 +12,25 @@ namespace GamesPlatform.Api.Controllers
     {
         private readonly IUserService _userService;
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IJwtHandler _jwtHandler;
 
-        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
+        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher, IJwtHandler jwtHandler)
         {
             _userService = userService;
             _commandDispatcher = commandDispatcher;
+            _jwtHandler = jwtHandler;
+        }
+
+        [HttpGet("token")]
+        public IActionResult Get()
+        {
+            var token = _jwtHandler.CreateToken("test@test.test", "user");
+
+            return Ok(token);
         }
 
         [HttpGet("{email}")]
-        public async Task<ActionResult<UserDto>> GetByEmail(string email)
+        public async Task<ActionResult<UserDto>> Get(string email)
         {
             var response = await _userService.GetUserAsync(email);
 
@@ -38,12 +45,12 @@ namespace GamesPlatform.Api.Controllers
             var response = await _userService.GetAllUsersAsync();
 
             if (!response.IsSuccess) return NotFound(response.Message);
-            
+
             return Ok(response.Data);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] CreateUserCommand request)
+        public async Task<IActionResult> Post([FromBody] CreateUserCommand request)
         {
             try
             {
@@ -53,8 +60,10 @@ namespace GamesPlatform.Api.Controllers
             {
                 return BadRequest(e.Message);
             }
-            
+
             return Created($"users/{request.Username}", null);
         }
+
+
     }
 }

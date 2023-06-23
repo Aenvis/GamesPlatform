@@ -10,7 +10,7 @@ namespace GamesPlatform.Infrastructure.EntityFramework
         public UserContext(DbContextOptions<UserContext> options)
             : base(options)
         {
-            
+
         }
     }
 }

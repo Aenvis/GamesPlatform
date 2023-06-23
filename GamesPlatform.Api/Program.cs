@@ -1,28 +1,51 @@
 using GamesPlatform.Domain.Repositories;
-using GamesPlatform.Infrastructure.Repositiories;
-using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.AutoMappers;
 using GamesPlatform.Infrastructure.Commands;
-using GamesPlatform.Infrastructure.IoC;
 using GamesPlatform.Infrastructure.EntityFramework;
-using Microsoft.EntityFrameworkCore;
+using GamesPlatform.Infrastructure.Extensions;
 using GamesPlatform.Infrastructure.Models;
-using System.Net.WebSockets;
+using GamesPlatform.Infrastructure.Repositiories;
+using GamesPlatform.Infrastructure.Services;
+using GamesPlatform.Infrastructure.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using GamesPlatform.Infrastructure.Settings;
+using System.Text;
 
-internal class Program
+public static class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+        builder.Services.AddSingleton(jwtSettings);
+
+        builder.Services.AddAuthentication()
+                        .AddJwtBearer(cfg =>
+                        {
+                            var key = builder.Configuration.GetValue<string>("Jwt:Key");
+                            cfg.RequireHttpsMetadata = false;
+                            cfg.SaveToken = true;
+
+                            cfg.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidIssuer = "https://localhost:7101",
+                                ValidateAudience = false,
+                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                            };
+                        });
 
         builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddSingleton<IEncrypter, Encrypter>();
+        builder.Services.AddSingleton<IJwtHandler, JwtHandler>(services => new JwtHandler(services.GetRequiredService<JwtSettings>()));
 
         builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddCommandHandlers();
@@ -45,7 +68,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
-
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();

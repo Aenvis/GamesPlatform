@@ -1,15 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace GamesPlatform.Infrastructure.IoC
+namespace GamesPlatform.Infrastructure.Extensions
 {
-    public static class Extensions
+    public static class IocExtensions
     {
         public static IServiceCollection AddCommandHandlers(this IServiceCollection services)
         {
             Assembly.GetExecutingAssembly()
                 .GetTypes()
-                .Where(a => a.Name.EndsWith("Handler") && !a.IsAbstract && !a.IsInterface)
+                .Where(a => a.Name.EndsWith("CommandHandler") && !a.IsAbstract && !a.IsInterface)
                 .Select(a => new { assignedType = a, serviceTypes = a.GetInterfaces().ToList() })
                 .ToList()
                 .ForEach(typesToRegister =>
