@@ -22,8 +22,10 @@ public static class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        // JwtSettings is registered this way because of IoC issues with JwtHandler and
+        // AddCommandHandlers extension method (JwtHandler would count as a CommandHandler, not intended)
         var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
-        builder.Services.AddSingleton(jwtSettings);
+        builder.Services.AddSingleton(jwtSettings!);
 
         builder.Services.AddAuthentication()
                         .AddJwtBearer(cfg =>
