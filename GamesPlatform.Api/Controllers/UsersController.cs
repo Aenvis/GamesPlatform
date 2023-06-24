@@ -2,6 +2,7 @@ using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.Commands.Users;
 using GamesPlatform.Infrastructure.DTOs;
 using GamesPlatform.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesPlatform.Api.Controllers
@@ -24,9 +25,16 @@ namespace GamesPlatform.Api.Controllers
         [HttpGet("token")]
         public IActionResult Get()
         {
-            var token = _jwtHandler.CreateToken("test@test.test", "user");
+            var token = _jwtHandler.CreateToken("test@test.test", "admin");
 
             return Ok(token);
+        }
+
+        [HttpGet("auth")]
+        [Authorize(Policy = "admin")]
+        public IActionResult GetAuth()
+        {
+            return Content("Authorized");
         }
 
         [HttpGet("{email}")]

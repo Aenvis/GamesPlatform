@@ -27,6 +27,8 @@ public static class Program
         var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
         builder.Services.AddSingleton(jwtSettings!);
 
+        builder.Services.AddAuthorization(x => x.AddPolicy("user", p => p.RequireRole("user")));
+        builder.Services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
         builder.Services.AddAuthentication()
                         .AddJwtBearer(cfg =>
                         {
