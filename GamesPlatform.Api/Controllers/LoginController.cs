@@ -12,20 +12,20 @@ namespace GamesPlatform.Api.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IMemoryCache _cache;
-        private readonly CommandDispatcher _dispatcher;
+        private readonly CommandDispatcher _commandDispatcher;
 
         public LoginController(IMemoryCache cache, CommandDispatcher dispatcher)
         {
             _cache = cache;
-            _dispatcher = dispatcher;
+            _commandDispatcher = dispatcher;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] LoginCommand command)
+        public async Task<IActionResult> Post([FromBody] LoginCommand request)
         {
-            command.TokenId = Guid.NewGuid();
-            await _dispatcher.DispatchAsync(command);
-            var jwt = _cache.GetJwt(command.TokenId);
+            request.TokenId = Guid.NewGuid();
+            await _commandDispatcher.DispatchAsync(request);
+            var jwt = _cache.GetJwt(request.TokenId);
 
             return Ok(jwt);
         }

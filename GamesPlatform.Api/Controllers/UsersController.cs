@@ -39,22 +39,5 @@ namespace GamesPlatform.Api.Controllers
 
             return Ok(response.Data);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateUserCommand request)
-        {
-            try
-            {
-                await _commandDispatcher.DispatchAsync(request);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            return Created($"users/{request.Username}", null);
-        }
-
-
     }
 }
