@@ -1,6 +1,5 @@
 ﻿using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.Commands.Users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesPlatform.Api.Controllers

@@ -2,8 +2,6 @@ using AutoMapper;
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
-using GamesPlatform.Infrastructure.Options;
-using Microsoft.Extensions.Options;
 
 namespace GamesPlatform.Infrastructure.Services
 {

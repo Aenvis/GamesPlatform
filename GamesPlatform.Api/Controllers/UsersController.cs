@@ -1,8 +1,6 @@
 using GamesPlatform.Infrastructure.Commands;
-using GamesPlatform.Infrastructure.Commands.Users;
 using GamesPlatform.Infrastructure.DTOs;
 using GamesPlatform.Infrastructure.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesPlatform.Api.Controllers
@@ -12,12 +10,10 @@ namespace GamesPlatform.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly ICommandDispatcher _commandDispatcher;
 
-        public UsersController(IUserService userService, ICommandDispatcher commandDispatcher)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _commandDispatcher = commandDispatcher;
         }
 
         [HttpGet("{email}")]

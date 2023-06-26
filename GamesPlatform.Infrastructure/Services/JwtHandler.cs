@@ -36,7 +36,7 @@ namespace GamesPlatform.Infrastructure.Services
                 issuer: _jwtSettigs.Issuer,
                 claims: claims,
                 notBefore: now,
-                expires: expires, 
+                expires: expires,
                 signingCredentials: signingCredentials
                 );
 

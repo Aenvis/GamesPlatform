@@ -1,7 +1,6 @@
 ﻿using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.Commands.Users;
 using GamesPlatform.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
