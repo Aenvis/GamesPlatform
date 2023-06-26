@@ -16,8 +16,6 @@
 # Mono auto generated files
 mono_crash.*
 
-./GamesPlatform.Infrastructure/Migrations/
-
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -268,6 +266,8 @@ ServiceFabricBackup/
 *.mdf
 *.ldf
 *.ndf
+
+GamesPlatform.Infrastructure/Migrations/
 
 # Business Intelligence projects
 *.rdl.data
