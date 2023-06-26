@@ -78,15 +78,15 @@ namespace GamesPlatform.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(email);
 
-            if(user is null)
+            if (user is null)
             {
                 throw new ArgumentException("Invalid email or password.");
             }
 
             var salt = user.Salt;
-            var hash = user.Password;
+            var hash = _encrypter.GetHash(password, salt);
 
-            if (hash == _encrypter.GetHash(password, salt)) return;
+            if (user.Password == hash) return;
 
             throw new ArgumentException("Invalid email or password.");
         }

@@ -54,6 +54,8 @@ public static class Program
         builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
         builder.Services.AddCommandHandlers();
 
+        builder.Services.AddMemoryCache();
+
         builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
 
         var app = builder.Build();
