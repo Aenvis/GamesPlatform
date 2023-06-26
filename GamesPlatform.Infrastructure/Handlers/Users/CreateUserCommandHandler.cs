@@ -3,7 +3,7 @@ using GamesPlatform.Infrastructure.Commands.Users;
 using GamesPlatform.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GamesPlatform.Infrastructure.Handlers
+namespace GamesPlatform.Infrastructure.Handlers.Users
 {
     public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
     {
