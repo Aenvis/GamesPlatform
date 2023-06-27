@@ -19,13 +19,28 @@ namespace GamesPlatform.Api.Controllers
             _commandDispatcher = commandDispatcher;
         }
 
-        [HttpGet]
+        [HttpGet("{title}")]
         public async Task<ActionResult<GameDto>> Get(string title)
         {
             var response = await _gameService.GetGameAsync(title);
 
             if (!response.IsSuccess) return BadRequest(response.Message);
             return Ok(response.Data);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<GameDto>>> GetAll()
+        {
+            var response = await _gameService.GetAllGamesAsync();
+
+            if (!response.IsSuccess) return BadRequest(response.Message);
+            return Ok(response.Data);
+        }
+
+        [HttpPost]
+        public async Task Post()
+        {
+
         }
     }
 }
