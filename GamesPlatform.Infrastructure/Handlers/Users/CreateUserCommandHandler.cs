@@ -9,9 +9,9 @@ namespace GamesPlatform.Infrastructure.Handlers.Users
     {
         private readonly IUserService _userService;
 
-        public CreateUserCommandHandler(IServiceProvider serviceProvider)
+        public CreateUserCommandHandler(IUserService userService)
         {
-            _userService = serviceProvider.GetRequiredService<IUserService>();
+            _userService = userService;
         }
         public async Task HandleAsync(CreateUserCommand command)
         {

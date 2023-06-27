@@ -1,4 +1,5 @@
 ﻿using GamesPlatform.Infrastructure.Commands;
+using GamesPlatform.Infrastructure.Commands.Games;
 using GamesPlatform.Infrastructure.DTOs;
 using GamesPlatform.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
@@ -38,7 +39,7 @@ namespace GamesPlatform.Api.Controllers
         }
 
         [HttpPost]
-        public async Task Post()
+        public async Task Post([FromBody]AddNewGameCommand request)
         {
 
         }

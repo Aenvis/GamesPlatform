@@ -59,7 +59,7 @@ namespace GamesPlatform.Infrastructure.Services
             };
         }
 
-        public async Task AddNewGame(Guid id, string Title, string Author, string? Description = null)
+        public async Task AddNewGameAsync(Guid id, string Title, string Author, string? Description = null)
         {
             throw new NotImplementedException();
         }

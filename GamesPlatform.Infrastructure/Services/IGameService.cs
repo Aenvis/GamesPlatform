@@ -7,6 +7,6 @@ namespace GamesPlatform.Infrastructure.Services
     {
         Task<ServiceResponse<GameDto>> GetGameAsync(string title);
         Task<ServiceResponse<IEnumerable<GameDto>>> GetAllGamesAsync();
-        Task AddNewGame(Guid id, string Title, string Author, string? Description = null);
+        Task AddNewGameAsync(Guid id, string Title, string Author, string? Description = null);
     }
 }
