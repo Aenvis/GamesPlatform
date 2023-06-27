@@ -57,7 +57,7 @@ namespace GamesPlatform.Infrastructure.Services
             };
         }
 
-        public async Task RegisterAsync(Guid id, string email, string username, string password, DateTime dateOfBirth)
+        public async Task RegisterAsync(Guid id, string email, string username, string password)
         {
             var newUser = await _userRepository.GetAsync(email);
 
@@ -68,7 +68,7 @@ namespace GamesPlatform.Infrastructure.Services
 
             var salt = _encrypter.GetSalt();
             var hash = _encrypter.GetHash(password, salt);
-            var user = new User(id, email, hash, salt, username, dateOfBirth);
+            var user = new User(id, email, hash, salt, username);
             await _userRepository.CreateAsync(user);
         }
 

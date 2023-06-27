@@ -7,7 +7,7 @@ namespace GamesPlatform.Infrastructure.Services
     {
         Task<ServiceResponse<UserDto>> GetUserAsync(string email);
         Task<ServiceResponse<IEnumerable<UserDto>>> GetAllUsersAsync();
-        Task RegisterAsync(Guid id, string email, string username, string password, DateTime dateOfBirth);
+        Task RegisterAsync(Guid id, string email, string username, string password);
         Task LoginAsync(string email, string password);
     }
 }
