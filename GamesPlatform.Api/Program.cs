@@ -67,7 +67,8 @@ public static class Program
         using (var scope = app.Services.CreateScope())
         {
             var serviceProvider = scope.ServiceProvider;
-            SeedUserData.Initialize(serviceProvider);
+            SeedUserData.InitializeUserDbContext(serviceProvider);
+            SeedUserData.InitializeGameDbContext(serviceProvider);
         }
 
         // Configure the HTTP request pipeline.

@@ -17,18 +17,16 @@ namespace GamesPlatform.Infrastructure.Services
         {
             _gameRepository = gameRepository;
         }
-
-        public async Task AddNewGame(Guid id, string Title, string Author, string? Description = null)
+        public async Task<ServiceResponse<GameDto>> GetGameAsync(string title)
         {
             throw new NotImplementedException();
         }
-
         public async Task<ServiceResponse<IEnumerable<GameDto>>> GetAllGamesAsync()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ServiceResponse<GameDto>> GetGameAsync(string title)
+        public async Task AddNewGame(Guid id, string Title, string Author, string? Description = null)
         {
             throw new NotImplementedException();
         }
