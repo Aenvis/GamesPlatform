@@ -9,25 +9,22 @@ namespace GamesPlatform.Infrastructure.Repositiories
     {
         private readonly UserDbContext _context;
 
-        public UserRepository(UserDbContext userContext)
+        public UserRepository(UserDbContext context)
         {
-            _context = userContext;
+            _context = context;
         }
 
         public async Task<User?> GetAsync(Guid id)
-        {
-            return await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
-        }
+        => await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
+        
 
         public async Task<User?> GetAsync(string email)
-        {
-            return await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
-        }
+        => await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
+        
 
         public async Task<IEnumerable<User>> GetAllAsync()
-        {
-            return await _context.Users.ToListAsync();
-        }
+        => await _context.Users.ToListAsync();
+        
 
         public async Task CreateAsync(User user)
         {

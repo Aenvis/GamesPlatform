@@ -22,7 +22,5 @@ namespace GamesPlatform.Domain.Models
             Username = username;
             CreatedAt = DateTime.UtcNow;
         }
-
-
     }
 }
