@@ -1,4 +1,5 @@
 ﻿using GamesPlatform.Domain.Models;
+using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,11 @@ namespace GamesPlatform.Infrastructure.Services
 {
     public class GameService : IGameService
     {
-        public GameService()
+        private readonly IGameRepository _gameRepository;
+
+        public GameService(IGameRepository gameRepository)
         {
-            
+            _gameRepository = gameRepository;
         }
 
         public async Task AddNewGame(Guid id, string Title, string Author, string? Description = null)
