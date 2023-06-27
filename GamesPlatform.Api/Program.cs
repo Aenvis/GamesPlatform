@@ -28,6 +28,7 @@ public static class Program
 
         builder.Services.AddAuthorization(x => x.AddPolicy("user", p => p.RequireRole("user")));
         builder.Services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
+
         builder.Services.AddAuthentication()
                         .AddJwtBearer(cfg =>
                         {
@@ -55,7 +56,8 @@ public static class Program
 
         builder.Services.AddMemoryCache();
 
-        builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
+        builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserDbContext")));
+        builder.Services.AddDbContext<GameDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("GameDbContext")));
 
         var app = builder.Build();
 

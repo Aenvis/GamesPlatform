@@ -9,8 +9,8 @@ namespace GamesPlatform.Infrastructure.Models
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using var context = new UserContext(serviceProvider.GetRequiredService<
-                    DbContextOptions<UserContext>>());
+            using var context = new UserDbContext(serviceProvider.GetRequiredService<
+                    DbContextOptions<UserDbContext>>());
 
             if (context.Users.Any()) return;
 

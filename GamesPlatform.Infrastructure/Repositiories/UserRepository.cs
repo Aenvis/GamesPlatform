@@ -7,9 +7,9 @@ namespace GamesPlatform.Infrastructure.Repositiories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserContext _context;
+        private readonly UserDbContext _context;
 
-        public UserRepository(UserContext userContext)
+        public UserRepository(UserDbContext userContext)
         {
             _context = userContext;
         }

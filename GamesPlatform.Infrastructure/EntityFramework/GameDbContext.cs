@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GamesPlatform.Infrastructure.EntityFramework
 {
-    public class UserContext : DbContext
+    public class GameDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<Game> Games { get; set; }
 
-        public UserContext(DbContextOptions<UserContext> options)
+        public GameDbContext(DbContextOptions<GameDbContext> options)
             : base(options)
         {
-
+            
         }
     }
 }
