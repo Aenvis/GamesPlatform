@@ -41,10 +41,7 @@ namespace GamesPlatform.Infrastructure.Repositiories
         public async Task DeleteAsync(Guid id)
         {
             var userToDelete = await GetAsync(id);
-
-            if (userToDelete is null) return;
-
-            _context.Users.Remove(userToDelete);
+            _context.Users.Remove(userToDelete!);
             await _context.SaveChangesAsync();
         }
     }

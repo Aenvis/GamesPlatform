@@ -62,6 +62,7 @@ public static class Program
 
         builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserDbContext")));
         builder.Services.AddDbContext<GameDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("GameDbContext")));
+        builder.Services.AddDbContext<UserGameNodeDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("USerGameNodeDbContext")));
 
         var app = builder.Build();
 
