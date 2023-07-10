@@ -1,28 +1,56 @@
-﻿using GamesPlatform.Domain.Models;
+﻿using AutoMapper;
+using GamesPlatform.Domain.Models;
+using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamesPlatform.Infrastructure.Services
 {
     public class UserLibraryService : IUserLibraryService
     {
-        public Task<ServiceResponse<IEnumerable<UserGameNodeDto>>> GetAllGamesOfOneUserAsync()
+        private readonly IUserGameNodeRepository _userGameNodeRepository;
+        private readonly IMapper _mapper;
+
+        public UserLibraryService(IUserGameNodeRepository userGameNodeRepository, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _userGameNodeRepository = userGameNodeRepository;
+            _mapper = mapper;
+        }
+        public async Task<ServiceResponse<IEnumerable<UserGameNodeDto>>> GetAllGamesOfOneUserAsync(Guid userId)
+        {
+            var nodes = await _userGameNodeRepository.GetAllOfOneUserAsync(userId);
+
+            if (nodes is null)
+            {
+                return new ServiceResponse<IEnumerable<UserGameNodeDto>>
+                {
+                    Message = "User games library not found.",
+                    IsSuccess = false
+                };
+            }
+
+            return new ServiceResponse<IEnumerable<UserGameNodeDto>>
+            {
+                Data = _mapper.Map<IEnumerable<UserGameNode>, IEnumerable<UserGameNodeDto>>(nodes),
+                IsSuccess = true
+            };
         }
 
-        public Task AddGameAsync(Guid userId, Guid gameId)
+        public async Task AddGameAsync(Guid userId, Guid gameId)
         {
-            throw new NotImplementedException();
+            var nodeCheck = await _userGameNodeRepository.GetNodeAsync(userId, gameId);
+
+            if (nodeCheck is not null) throw new ArgumentException("Game not found.");
+
+            var node = new UserGameNode(userId, gameId);
+            await _userGameNodeRepository.CreateAsync(node);
         }
 
-        public Task DeleteGameAsync(Guid userId, Guid gameId)
+        public async Task DeleteGameAsync(Guid userId, Guid gameId)
         {
-            throw new NotImplementedException();
+            var node = await _userGameNodeRepository.GetNodeAsync(userId, gameId)
+                ?? throw new ArgumentException("Game not found.");
+
+            await _userGameNodeRepository.DeleteAsync(userId, gameId);
         }
     }
 }
