@@ -74,12 +74,8 @@ namespace GamesPlatform.Infrastructure.Services
 
         public async Task LoginAsync(string email, string password)
         {
-            var user = await _userRepository.GetAsync(email);
-
-            if (user is null)
-            {
-                throw new ArgumentException("Invalid email or password.");
-            }
+            var user = await _userRepository.GetAsync(email) 
+                ?? throw new ArgumentException("Invalid email or password.");
 
             var salt = user.Salt;
             var hash = _encrypter.GetHash(password, salt);
@@ -87,6 +83,14 @@ namespace GamesPlatform.Infrastructure.Services
             if (user.Password == hash) return;
 
             throw new ArgumentException("Invalid email or password.");
+        }
+
+        public async Task DeleteAsync(string email)
+        {
+            var user = await _userRepository.GetAsync(email) 
+                ?? throw new ArgumentException("User not found.");
+
+            await _userRepository.DeleteAsync(user.Id);
         }
     }
 }

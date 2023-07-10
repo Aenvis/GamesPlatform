@@ -1,6 +1,8 @@
+using GamesPlatform.Domain.Models;
 using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.DTOs;
 using GamesPlatform.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GamesPlatform.Api.Controllers
@@ -34,6 +36,22 @@ namespace GamesPlatform.Api.Controllers
             if (!response.IsSuccess) return NotFound(response.Message);
 
             return Ok(response.Data);
+        }
+
+        [HttpDelete]
+        [Authorize(Policy = "admin")]
+        public async Task<IActionResult> Delete(string email)
+        {
+            try
+            {
+                await _userService.DeleteAsync(email);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok($"User {email} has been deleted succesfully.");
         }
     }
 }

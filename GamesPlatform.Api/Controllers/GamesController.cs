@@ -39,9 +39,18 @@ namespace GamesPlatform.Api.Controllers
         }
 
         [HttpPost]
-        public async Task Post([FromBody]AddNewGameCommand request)
+        public async Task<IActionResult> Post([FromBody]AddNewGameCommand request)
         {
+            try
+            {
+                await _commandDispatcher.DispatchAsync(request);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
 
+            return Created($"Games/{request.Title}", null);
         }
     }
 }
