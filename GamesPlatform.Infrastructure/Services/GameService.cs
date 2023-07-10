@@ -2,11 +2,6 @@
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GamesPlatform.Infrastructure.Services
 {
@@ -24,7 +19,7 @@ namespace GamesPlatform.Infrastructure.Services
         {
             var game = await _gameRepository.GetAsync(title);
 
-            if(game is null)
+            if (game is null)
             {
                 return new ServiceResponse<GameDto>
                 {

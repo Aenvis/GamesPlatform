@@ -1,5 +1,3 @@
-using GamesPlatform.Domain.Models;
-using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.DTOs;
 using GamesPlatform.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;

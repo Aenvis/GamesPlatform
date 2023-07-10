@@ -26,7 +26,7 @@ namespace GamesPlatform.Api.Controllers
 
             try
             {
-            await _commandDispatcher.DispatchAsync(request);
+                await _commandDispatcher.DispatchAsync(request);
             }
             catch (Exception e)
             {

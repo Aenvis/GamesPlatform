@@ -1,7 +1,6 @@
 ﻿using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.Commands.Users;
 using GamesPlatform.Infrastructure.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GamesPlatform.Infrastructure.Handlers.Users
 {

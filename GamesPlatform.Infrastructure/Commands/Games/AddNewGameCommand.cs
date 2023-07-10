@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GamesPlatform.Infrastructure.Commands.Games
+﻿namespace GamesPlatform.Infrastructure.Commands.Games
 {
     public class AddNewGameCommand : ICommand
     {

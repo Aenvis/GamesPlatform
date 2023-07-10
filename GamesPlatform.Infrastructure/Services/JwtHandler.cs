@@ -42,7 +42,7 @@ namespace GamesPlatform.Infrastructure.Services
 
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            return new JwtDto(token:   token,
+            return new JwtDto(token: token,
                               expires: expires.ToTimestamp());
         }
     }
