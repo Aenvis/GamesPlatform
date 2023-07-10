@@ -11,9 +11,9 @@ namespace GamesPlatform.Api.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IMemoryCache _cache;
-        private readonly CommandDispatcher _commandDispatcher;
+        private readonly ICommandDispatcher _commandDispatcher;
 
-        public LoginController(IMemoryCache cache, CommandDispatcher dispatcher)
+        public LoginController(IMemoryCache cache, ICommandDispatcher dispatcher)
         {
             _cache = cache;
             _commandDispatcher = dispatcher;
