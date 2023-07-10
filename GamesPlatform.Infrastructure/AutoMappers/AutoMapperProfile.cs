@@ -13,6 +13,9 @@ namespace GamesPlatform.Infrastructure.AutoMappers
             
             CreateMap<Game, GameDto>();
             CreateMap<IEnumerable<GameDto>, IEnumerable<Game>>();
+            
+            CreateMap<UserGameNode, UserGameNodeDto>();
+            CreateMap<IEnumerable<UserGameNodeDto>, IEnumerable<UserGameNode>>();
         }
     }
 }
