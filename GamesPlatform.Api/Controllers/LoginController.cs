@@ -23,7 +23,15 @@ namespace GamesPlatform.Api.Controllers
         public async Task<IActionResult> Post([FromBody] LoginCommand request)
         {
             request.TokenId = Guid.NewGuid();
+
+            try
+            {
             await _commandDispatcher.DispatchAsync(request);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
             var jwt = _cache.GetJwt(request.TokenId);
 
             return Ok(jwt);

@@ -38,7 +38,7 @@ namespace GamesPlatform.Api.Controllers
             return Ok(response.Data);
         }
 
-        [HttpDelete]
+        [HttpDelete("delete/{email}")]
         [Authorize(Policy = "admin")]
         public async Task<IActionResult> Delete(string email)
         {

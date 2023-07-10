@@ -1,6 +1,7 @@
 using AutoMapper;
 using GamesPlatform.Domain.Models;
 using GamesPlatform.Domain.Repositories;
+using GamesPlatform.Infrastructure.Consts;
 using GamesPlatform.Infrastructure.DTOs;
 
 namespace GamesPlatform.Infrastructure.Services
@@ -57,7 +58,7 @@ namespace GamesPlatform.Infrastructure.Services
             };
         }
 
-        public async Task RegisterAsync(Guid id, string email, string username, string password)
+        public async Task RegisterAsync(Guid id, string email, string username, string password, string role = Roles.User)
         {
             var newUser = await _userRepository.GetAsync(email);
 
@@ -68,7 +69,7 @@ namespace GamesPlatform.Infrastructure.Services
 
             var salt = _encrypter.GetSalt();
             var hash = _encrypter.GetHash(password, salt);
-            var user = new User(id, email, hash, salt, username);
+            var user = new User(id, email, hash, salt, username, role);
             await _userRepository.CreateAsync(user);
         }
 

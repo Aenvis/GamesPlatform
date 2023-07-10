@@ -1,6 +1,7 @@
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.AutoMappers;
 using GamesPlatform.Infrastructure.Commands;
+using GamesPlatform.Infrastructure.Consts;
 using GamesPlatform.Infrastructure.EntityFramework;
 using GamesPlatform.Infrastructure.Extensions;
 using GamesPlatform.Infrastructure.Models;
@@ -26,8 +27,8 @@ public static class Program
         var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
         builder.Services.AddSingleton(jwtSettings!);
 
-        builder.Services.AddAuthorization(x => x.AddPolicy("user", p => p.RequireRole("user")));
-        builder.Services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
+        builder.Services.AddAuthorization(x => x.AddPolicy(Roles.User, p => p.RequireRole(Roles.User)));
+        builder.Services.AddAuthorization(x => x.AddPolicy(Roles.Admin, p => p.RequireRole(Roles.Admin)));
 
         builder.Services.AddAuthentication()
                         .AddJwtBearer(cfg =>

@@ -1,4 +1,5 @@
 ﻿using GamesPlatform.Domain.Models;
+using GamesPlatform.Infrastructure.Consts;
 using GamesPlatform.Infrastructure.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,12 +16,12 @@ namespace GamesPlatform.Infrastructure.Models
             if (context.Users.Any()) return;
 
             context.Users.AddRange(
-                new User(Guid.NewGuid(), "email1@email.com", "secret1", "salt", "SweetJack69"),
-                new User(Guid.NewGuid(), "email2@email.com", "secret2", "salt", "xxGamerxx"),
-                new User(Guid.NewGuid(), "email3@email.com", "secret3", "salt", "MarioFromPolandPL"),
-                new User(Guid.NewGuid(), "email4@email.com", "secret4", "salt", "KittyPlayGamesXD"),
-                new User(Guid.NewGuid(), "email5@email.com", "secret5", "salt", "CatsOverDogs"),
-                new User(Guid.NewGuid(), "email6@email.com", "secret6", "salt", "KurtCombine")
+                new User(Guid.NewGuid(), "email1@email.com", "secret1", "salt", "SweetJack69", Roles.User),
+                new User(Guid.NewGuid(), "email2@email.com", "secret2", "salt", "xxGamerxx", Roles.User),
+                new User(Guid.NewGuid(), "email3@email.com", "secret3", "salt", "MarioFromPolandPL", Roles.User),
+                new User(Guid.NewGuid(), "email4@email.com", "secret4", "salt", "KittyPlayGamesXD", Roles.User),
+                new User(Guid.NewGuid(), "email5@email.com", "secret5", "salt", "CatsOverDogs", Roles.User),
+                new User(Guid.NewGuid(), "email6@email.com", "secret6", "salt", "KurtCombine", Roles.User)
                 );
 
             context.SaveChanges();

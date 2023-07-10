@@ -15,7 +15,7 @@ namespace GamesPlatform.Infrastructure.Handlers.Users
         }
         public async Task HandleAsync(CreateUserCommand command)
         {
-            await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Username, command.Password);
+            await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Username, command.Password, command.Role);
         }
     }
 }
