@@ -15,7 +15,28 @@ namespace GamesPlatform.Infrastructure.Services
             _gameRepository = gameRepository;
             _mapper = mapper;
         }
-        public async Task<ServiceResponse<GameDto>> GetGameAsync(string title)
+
+		public async Task<ServiceResponse<GameDto>> GetGameAsync(Guid id)
+		{
+			var game = await _gameRepository.GetAsync(id);
+
+			if (game is null)
+			{
+				return new ServiceResponse<GameDto>
+				{
+					IsSuccess = false,
+					Message = "Game not found."
+				};
+			}
+
+			return new ServiceResponse<GameDto>
+			{
+				Data = _mapper.Map<Game, GameDto>(game),
+				IsSuccess = true
+			};
+		}
+
+		public async Task<ServiceResponse<GameDto>> GetGameAsync(string title)
         {
             var game = await _gameRepository.GetAsync(title);
 
@@ -34,6 +55,7 @@ namespace GamesPlatform.Infrastructure.Services
                 IsSuccess = true
             };
         }
+
         public async Task<ServiceResponse<IEnumerable<GameDto>>> GetAllGamesAsync()
         {
             var games = await _gameRepository.GetAllAsync();

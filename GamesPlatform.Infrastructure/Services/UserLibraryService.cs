@@ -8,29 +8,44 @@ namespace GamesPlatform.Infrastructure.Services
 	public class UserLibraryService : IUserLibraryService
 	{
 		private readonly IUserGameNodeRepository _userGameNodeRepository;
+		private readonly IGameService _gameService;
 		private readonly IMapper _mapper;
 
-		public UserLibraryService(IUserGameNodeRepository userGameNodeRepository, IMapper mapper)
+		public UserLibraryService(IUserGameNodeRepository userGameNodeRepository, IMapper mapper, IGameService gameService)
 		{
 			_userGameNodeRepository = userGameNodeRepository;
 			_mapper = mapper;
+			_gameService = gameService;
 		}
-		public async Task<ServiceResponse<IEnumerable<UserGameNodeDto>>> GetAllGamesOfOneUserAsync(Guid userId)
+
+		public async Task<ServiceResponse<IEnumerable<GameDto>>> GetAllGamesOfOneUserAsync(Guid userId)
 		{
 			var nodes = await _userGameNodeRepository.GetAllOfOneUserAsync(userId);
 
 			if (nodes is null)
 			{
-				return new ServiceResponse<IEnumerable<UserGameNodeDto>>
+				return new ServiceResponse<IEnumerable<GameDto>>
 				{
 					Message = "User games library not found.",
 					IsSuccess = false
 				};
 			}
 
-			return new ServiceResponse<IEnumerable<UserGameNodeDto>>
+			var games = new List<GameDto>();
+
+			foreach (var node in nodes)
 			{
-				Data = _mapper.Map<IEnumerable<UserGameNode>, IEnumerable<UserGameNodeDto>>(nodes),
+				var response = await _gameService.GetGameAsync(node.GameId);
+
+				if (response.IsSuccess)
+				{
+					games.Add(response.Data!);
+				}
+			}
+
+			return new ServiceResponse<IEnumerable<GameDto>>
+			{
+				Data = games,
 				IsSuccess = true
 			};
 		}
@@ -41,10 +56,10 @@ namespace GamesPlatform.Infrastructure.Services
 
 			if (nodeCheck is not null)
 			{
-				throw new ArgumentException("Game not found.");
+				throw new ArgumentException("The game is already added to the user's library.");
 			}
 
-			var node = new UserGameNode(userId, gameId);
+			var node = new UserGameNode(Guid.NewGuid(), userId, gameId);
 			await _userGameNodeRepository.CreateAsync(node);
 		}
 

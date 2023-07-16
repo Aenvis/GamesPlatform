@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GamesPlatform.Api.Controllers
 {
-	[ApiController]
 	[Route("api/[controller]")]
+	[ApiController]
 	public class UsersController : ControllerBase
 	{
 		private readonly IUserService _userService;
@@ -51,7 +51,7 @@ namespace GamesPlatform.Api.Controllers
 			return Ok(response.Data);
 		}
 
-		[HttpPut]
+		[HttpPut("changepassword")]
 		[Authorize]
 		public async Task<IActionResult> Put([FromBody] ChangeUserPasswordCommand command)
 		{

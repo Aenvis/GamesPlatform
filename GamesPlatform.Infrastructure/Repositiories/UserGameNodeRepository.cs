@@ -5,19 +5,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GamesPlatform.Infrastructure.Repositiories
 {
-    public class UsersGamesRelationRepository : IUserGameNodeRepository
+    public class UserGameNodeRepository : IUserGameNodeRepository
     {
         private readonly UserGameNodeDbContext _context;
+
+        public UserGameNodeRepository(UserGameNodeDbContext context)
+        {
+            _context = context;
+        }
 
         public async Task<UserGameNode?> GetNodeAsync(Guid userId, Guid gameId)
         => await _context.userGameNodes.SingleOrDefaultAsync(x => (x.UserId == userId && x.GameId == gameId));
 
         public async Task<IEnumerable<UserGameNode>> GetAllOfOneUserAsync(Guid userId)
-        => await _context.userGameNodes.ToListAsync();
-
+        => await _context.userGameNodes.AsQueryable().Where(x => x.UserId == userId).ToListAsync();
+        
         public async Task CreateAsync(UserGameNode node)
         {
-            await _context.userGameNodes.AddAsync(node);
+            await _context.AddAsync(node);
             await _context.SaveChangesAsync();
         }
 
@@ -29,3 +34,4 @@ namespace GamesPlatform.Infrastructure.Repositiories
         }
     }
 }
+ 

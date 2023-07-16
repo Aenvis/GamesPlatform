@@ -51,8 +51,10 @@ public static class Program
         // Services
         builder.Services.AddScoped<IUserRepository, UserRepository>();
         builder.Services.AddScoped<IGameRepository, GameRepository>();
+        builder.Services.AddScoped<IUserGameNodeRepository, UserGameNodeRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IGameService, GameService>();
+        builder.Services.AddScoped<IUserLibraryService, UserLibraryService>();
         builder.Services.AddSingleton<IEncrypter, Encrypter>();
         builder.Services.AddSingleton<IJwtHandler, JwtHandler>(services => new JwtHandler(services.GetRequiredService<JwtSettings>()));
 
