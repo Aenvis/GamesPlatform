@@ -1,6 +1,8 @@
 ﻿using GamesPlatform.Infrastructure.Commands;
 using GamesPlatform.Infrastructure.Commands.Games;
 using GamesPlatform.Infrastructure.DTOs;
+using GamesPlatform.Infrastructure.Queries;
+using GamesPlatform.Infrastructure.Queries.Games;
 using GamesPlatform.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,20 +14,30 @@ namespace GamesPlatform.Api.Controllers
     {
         private readonly IGameService _gameService;
         private readonly ICommandDispatcher _commandDispatcher;
+        private readonly IQueryDispatcher _queryDispatcher;
 
-        public GamesController(IGameService gameService, ICommandDispatcher commandDispatcher)
+		public GamesController(IGameService gameService, ICommandDispatcher commandDispatcher, IQueryDispatcher queryDispatcher)
+		{
+			_gameService = gameService;
+			_commandDispatcher = commandDispatcher;
+			_queryDispatcher = queryDispatcher;
+		}
+
+		[HttpGet("Game")]
+        public async Task<IActionResult> Get([FromQuery] GetGameByEmailQuery query)
         {
-            _gameService = gameService;
-            _commandDispatcher = commandDispatcher;
-        }
+            GameDto game;
 
-        [HttpGet("{title}")]
-        public async Task<ActionResult<GameDto>> Get(string title)
-        {
-            var response = await _gameService.GetGameAsync(title);
+            try
+            {
+                game = await _queryDispatcher.DispatchAsync<GetGameByEmailQuery, GameDto>(query);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
 
-            if (!response.IsSuccess) return BadRequest(response.Message);
-            return Ok(response.Data);
+            return Ok(game);
         }
 
         [HttpGet]
