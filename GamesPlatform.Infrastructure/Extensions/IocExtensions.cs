@@ -19,5 +19,20 @@ namespace GamesPlatform.Infrastructure.Extensions
 
             return services;
         }
-    }
+
+		public static IServiceCollection AddQueryHandlers(this IServiceCollection services)
+		{
+			Assembly.GetExecutingAssembly()
+				.GetTypes()
+				.Where(a => a.Name.EndsWith("QueryHandler") && !a.IsAbstract && !a.IsInterface)
+				.Select(a => new { assignedType = a, serviceTypes = a.GetInterfaces().ToList() })
+				.ToList()
+				.ForEach(typesToRegister =>
+				{
+					typesToRegister.serviceTypes.ForEach(typeToRegister => services.AddScoped(typeToRegister, typesToRegister.assignedType));
+				});
+
+			return services;
+		}
+	}
 }
