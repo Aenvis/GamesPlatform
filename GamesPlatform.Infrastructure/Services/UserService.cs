@@ -86,6 +86,15 @@ namespace GamesPlatform.Infrastructure.Services
             throw new ArgumentException("Invalid email or password.");
         }
 
+        public async Task ChangeUserPasswordAsync(string email, string newPassword)
+        {
+            var user = await _userRepository.GetAsync(email);
+
+            user.SetPassword(newPassword);
+
+            await _userRepository.UpdateAsync(user);
+        }
+
         public async Task DeleteAsync(string email)
         {
             var user = await _userRepository.GetAsync(email)

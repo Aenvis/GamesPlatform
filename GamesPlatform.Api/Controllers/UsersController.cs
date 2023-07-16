@@ -51,6 +51,22 @@ namespace GamesPlatform.Api.Controllers
 			return Ok(response.Data);
 		}
 
+		[HttpPut]
+		[Authorize]
+		public async Task<IActionResult> Put([FromBody] ChangeUserPasswordCommand command)
+		{
+			try
+			{
+				await _commandDispatcher.DispatchAsync(command);
+			}
+			catch (Exception e)
+			{
+				return BadRequest(e.Message);
+			}
+
+			return Ok("Password has been changed.");
+		}
+
 		[HttpDelete("delete")]
 		[Authorize(Policy = "admin")]
 		public async Task<IActionResult> Delete([FromBody] DeleteUserCommand command)

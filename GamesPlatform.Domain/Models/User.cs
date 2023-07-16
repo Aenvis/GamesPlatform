@@ -23,5 +23,9 @@ namespace GamesPlatform.Domain.Models
             Role = role;
             CreatedAt = DateTime.UtcNow;
         }
+
+        public void SetPassword(string newPassword)
+        => Password = newPassword;
+        
     }
 }
