@@ -90,9 +90,13 @@ namespace GamesPlatform.Infrastructure.Services
         {
             var user = await _userRepository.GetAsync(email);
 
-            user.SetPassword(newPassword);
+			var salt = _encrypter.GetSalt();
+			var hash = _encrypter.GetHash(newPassword, salt);
 
-            await _userRepository.UpdateAsync(user);
+            user.SetPassword(hash);
+            user.SetSalt(salt);
+
+			await _userRepository.UpdateAsync(user);
         }
 
         public async Task DeleteAsync(string email)

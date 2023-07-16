@@ -24,8 +24,11 @@ namespace GamesPlatform.Domain.Models
             CreatedAt = DateTime.UtcNow;
         }
 
-        public void SetPassword(string newPassword)
-        => Password = newPassword;
+        public void SetPassword(string newPassword) 
+            => Password = newPassword;
+
+        public void SetSalt(string salt) 
+            => Salt = salt;
         
     }
 }
