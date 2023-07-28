@@ -67,9 +67,9 @@ public static class Program
         builder.Services.AddMemoryCache();
 
         // Database
-        builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserDbContext")));
-        builder.Services.AddDbContext<GameDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("GameDbContext")));
-        builder.Services.AddDbContext<UserGameNodeDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("USerGameNodeDbContext")));
+        builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("UserDbContext")));
+        builder.Services.AddDbContext<GameDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("GameDbContext")));
+        builder.Services.AddDbContext<UserGameNodeDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("UserGameNodeDbContext")));
 
         var app = builder.Build();
 

@@ -29,7 +29,25 @@ namespace GamesPlatform.Infrastructure.Repositiories
         public async Task CreateAsync(User user)
         {
             await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+			try
+			{
+				// Code that attempts to save changes to the database using Entity Framework
+			await _context.SaveChangesAsync();
+			}
+			catch (Exception ex)
+			{
+				// Check for inner exception and handle the error accordingly
+				if (ex.InnerException != null)
+				{
+					// Log or display the inner exception message
+					Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+				}
+				else
+				{
+					// Log or display the original exception message
+					Console.WriteLine("Exception: " + ex.Message);
+				}
+			}
         }
 
         public async Task UpdateAsync(User user)

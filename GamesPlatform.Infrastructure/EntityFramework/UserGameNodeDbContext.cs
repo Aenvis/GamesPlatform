@@ -10,13 +10,6 @@ namespace GamesPlatform.Infrastructure.EntityFramework
         public UserGameNodeDbContext(DbContextOptions<UserGameNodeDbContext> options)
             : base(options)
         {
-
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<UserGameNode>().HasNoKey();
         }
     }
 }

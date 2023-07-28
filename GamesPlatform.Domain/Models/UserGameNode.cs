@@ -11,12 +11,13 @@ namespace GamesPlatform.Domain.Models
         public Guid GameId { get; set; }
         public DateTime TransactionDate { get; set; }
 
+
         public UserGameNode(Guid id, Guid userId, Guid gameId)
         {
             Id = id;
             UserId = userId;
             GameId = gameId;
-            this.TransactionDate = DateTime.UtcNow;
+            TransactionDate = DateTime.UtcNow;
         }
     }
 }
