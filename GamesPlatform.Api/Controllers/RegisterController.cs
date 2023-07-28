@@ -8,9 +8,9 @@ namespace GamesPlatform.Api.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        private readonly CommandDispatcher _commandDispatcher;
+        private readonly ICommandDispatcher _commandDispatcher;
 
-        public RegisterController(CommandDispatcher commandDispatcher)
+        public RegisterController(ICommandDispatcher commandDispatcher)
         {
             _commandDispatcher = commandDispatcher;
         }

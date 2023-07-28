@@ -1,9 +1,11 @@
 using GamesPlatform.Domain.Repositories;
 using GamesPlatform.Infrastructure.AutoMappers;
 using GamesPlatform.Infrastructure.Commands;
+using GamesPlatform.Infrastructure.Consts;
 using GamesPlatform.Infrastructure.EntityFramework;
 using GamesPlatform.Infrastructure.Extensions;
 using GamesPlatform.Infrastructure.Models;
+using GamesPlatform.Infrastructure.Queries;
 using GamesPlatform.Infrastructure.Repositiories;
 using GamesPlatform.Infrastructure.Services;
 using GamesPlatform.Infrastructure.Settings;
@@ -26,8 +28,9 @@ public static class Program
         var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
         builder.Services.AddSingleton(jwtSettings!);
 
-        builder.Services.AddAuthorization(x => x.AddPolicy("user", p => p.RequireRole("user")));
-        builder.Services.AddAuthorization(x => x.AddPolicy("admin", p => p.RequireRole("admin")));
+        // Authorization and authentication
+        builder.Services.AddAuthorization(x => x.AddPolicy(Roles.User, p => p.RequireRole(Roles.User)));
+        builder.Services.AddAuthorization(x => x.AddPolicy(Roles.Admin, p => p.RequireRole(Roles.Admin)));
         builder.Services.AddAuthentication()
                         .AddJwtBearer(cfg =>
                         {
@@ -45,24 +48,36 @@ public static class Program
 
         builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
+        // Services
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IGameRepository, GameRepository>();
+        builder.Services.AddScoped<IUserGameNodeRepository, UserGameNodeRepository>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IGameService, GameService>();
+        builder.Services.AddScoped<IUserLibraryService, UserLibraryService>();
         builder.Services.AddSingleton<IEncrypter, Encrypter>();
         builder.Services.AddSingleton<IJwtHandler, JwtHandler>(services => new JwtHandler(services.GetRequiredService<JwtSettings>()));
 
+        // CQRS
         builder.Services.AddScoped<ICommandDispatcher, CommandDispatcher>();
+        builder.Services.AddScoped<IQueryDispatcher, QueryDispatcher>();
         builder.Services.AddCommandHandlers();
+        builder.Services.AddQueryHandlers();
 
         builder.Services.AddMemoryCache();
 
-        builder.Services.AddDbContext<UserContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserContext")));
+        // Database
+        builder.Services.AddDbContext<UserDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserDbContext")));
+        builder.Services.AddDbContext<GameDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("GameDbContext")));
+        builder.Services.AddDbContext<UserGameNodeDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("USerGameNodeDbContext")));
 
         var app = builder.Build();
 
         using (var scope = app.Services.CreateScope())
         {
             var serviceProvider = scope.ServiceProvider;
-            SeedUserData.Initialize(serviceProvider);
+            SeedUserData.InitializeUserDbContext(serviceProvider);
+            SeedUserData.InitializeGameDbContext(serviceProvider);
         }
 
         // Configure the HTTP request pipeline.

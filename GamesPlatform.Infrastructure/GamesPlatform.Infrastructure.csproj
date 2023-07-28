@@ -8,8 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="IoC\**" />
+    <Compile Remove="Migrations\**" />
     <EmbeddedResource Remove="IoC\**" />
+    <EmbeddedResource Remove="Migrations\**" />
     <None Remove="IoC\**" />
+    <None Remove="Migrations\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +28,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.20.0" />
   </ItemGroup>
 
 </Project>

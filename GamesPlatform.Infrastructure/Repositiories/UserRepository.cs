@@ -7,27 +7,24 @@ namespace GamesPlatform.Infrastructure.Repositiories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserContext _context;
+        private readonly UserDbContext _context;
 
-        public UserRepository(UserContext userContext)
+        public UserRepository(UserDbContext context)
         {
-            _context = userContext;
+            _context = context;
         }
 
         public async Task<User?> GetAsync(Guid id)
-        {
-            return await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
-        }
+        => await _context.Users.SingleOrDefaultAsync(x => x.Id == id);
+
 
         public async Task<User?> GetAsync(string email)
-        {
-            return await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
-        }
+        => await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
+
 
         public async Task<IEnumerable<User>> GetAllAsync()
-        {
-            return await _context.Users.ToListAsync();
-        }
+        => await _context.Users.ToListAsync();
+
 
         public async Task CreateAsync(User user)
         {
@@ -44,10 +41,7 @@ namespace GamesPlatform.Infrastructure.Repositiories
         public async Task DeleteAsync(Guid id)
         {
             var userToDelete = await GetAsync(id);
-
-            if (userToDelete is null) return;
-
-            _context.Users.Remove(userToDelete);
+            _context.Users.Remove(userToDelete!);
             await _context.SaveChangesAsync();
         }
     }
